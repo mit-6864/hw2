@@ -92,13 +92,13 @@ class CountVectorizer:
           X[i][self.tokenizer.word_to_token[word]] += 1
     return X
 
-def get_ngrams(tokenized_corpus, window_size):
+def get_ngrams(tokenized_corpus, window_size, pad_idx=2006):
     ngrams = []
     for i, review in enumerate(tokenized_corpus):
         for j, word in enumerate(review):
             min_ind = max(0, j-window_size)
             max_ind = min(len(review), j+window_size+1)
-            ctx = np.zeros(2 * window_size, dtype=np.int64) - 1
+            ctx = np.zeros(2 * window_size, dtype=np.int64) + pad_idx
             for ik, k in enumerate(range(min_ind, j)):
                 ctx[ik] = review[k]
             for ik, k in enumerate(range(j+1, max_ind)):
